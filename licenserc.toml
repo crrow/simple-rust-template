@@ -36,6 +36,7 @@ excludes = [
     ".git",
     "LICENSE",
     "Makefile",
+    "justfile",
     # docs and generated files
     "**/*.md",
     "**/*.hbs",

@@ -1,0 +1,12 @@
+disallowed-types = [
+    { path = "once_cell::sync::Lazy", reason = "Please use `std::sync::LazyLock` instead." },
+]
+
+disallowed-macros = [
+    { path = "lazy_static::lazy_static", reason = "Please use `std::sync::LazyLock` instead." },
+]
+
+avoid-breaking-exported-api = true
+too-many-arguments-threshold = 10
+upper-case-acronyms-aggressive = false
+enum-variant-size-threshold = 200
