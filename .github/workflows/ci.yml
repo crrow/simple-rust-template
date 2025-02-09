@@ -25,6 +25,11 @@ on:
     branches:
       - main
 
+env:
+  # Disable incremental compilation for faster from-scratch builds
+  CARGO_INCREMENTAL: 0
+  CARGO_PROFILE_TEST_DEBUG: 0
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}-${{ github.event_name }}
   cancel-in-progress: true
@@ -45,14 +50,19 @@ jobs:
 
   build:
     runs-on: ${{ matrix.os }}
+    env:
+      CARGO_PROFILE_RELEASE_LTO: true
+      CARGO_PROFILE_RELEASE_CODEGEN_UNITS: 1
     strategy:
       matrix:
         os:
           - ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
       - name: Build
-        run: cargo build
+        run: cargo build --release --locked
 
   unit:
     runs-on: ${{ matrix.os }}
@@ -62,8 +72,12 @@ jobs:
           - ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      - name: Compile
+        run: cargo check --locked
       - name: Test
-        run: cargo test --all-targets --workspace
+        run: cargo nextest run --workspace --all-features
         env:
           RUST_LOG: DEBUG
           RUST_BACKTRACE: full
