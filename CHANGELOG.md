@@ -1,7 +1,6 @@
 ## What's Changed in 0.1.0
 * update by @crrow
 * update by @crrow
-* update by @RyanMyshell
 * chore: update CD workflow by @crrow
 
 ## What's Changed in v0.1.0-release
